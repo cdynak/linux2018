@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>cdynak / linux2018</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+        <section>
+          <h1>Embedded Linux build systems</h1>
+          <h2>Cezary Dynak</h2>
+          <h3>2018-03-04</h3>
+        </section>
+        <!-- https://github.com/impress/impress.js/wiki/Examples-and-demos -->
+        <!-- https://github.com/hakimel/reveal.js/wiki/Example-Presentations -->
+
+
+        <section>
+          <section>
+            <h1>GOALS AND ASSUMPTIONS</h1>
+          </section>
+          <section>
+            <ul>
+              <li>Examine tools for creating Linux distributions</li>
+              <li>Deployments on chosen embedded platforms</li>
+              <li>Collect metrics for every deployment</li>
+              <li>Provide unique high-level overview</li>
+            </ul>
+          </section>
+          <section>
+            <img src="https://static4.arrow.com/-/media/images/research-and-events/articles/0916/0916-iot-operating-systems-final-image-2.jpg" />
+            <!-- https://www.arrow.com/en/research-and-events/articles/iot-operating-systems -->
+            <p>Survey results for Operating Systems</br/>used for IoT Devices</p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h1>INDIVIDUAL CONTRIBUTION</h1>
+          </section>
+          <section>
+            <h3>Exploring and describing</h3>
+            <ul>
+              <li>Representative set of embedded devices</li>
+              <li>All open source distribution builders</li>
+            </ul>
+          </section>
+          <section>
+            <pre><code class="hljs" data-trim contenteditable>
+$ wget https://downloads.raspberrypi.org/raspbian_latest
+
+$ pv sdcard.img | dd of=/dev/sdb bs=4M oflag=dsync
+            </code></pre>
+          </section>
+          <section>
+            <h3>Proposing generalized structure</h3>
+            <ul>
+              <li>Source code</li>
+              <li>Host OS requirements</li>
+              <li>Cross-compilation toolchain</li>
+              <li>Target OS configuration</li>
+              <li>Produced output</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Tests</h3>
+            <ul>
+              <li>With respect to the target OS</li>
+              <li>With respect to the host OS</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Example use cases</h3>
+            <ul>
+              <li>The Node.js IoT application</li>
+              <li>Building Containers</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h1>RESULTS AND CONCLUSIONS</h1>
+          </section>
+          <section>
+            <h3>Build systems are better than distributions</h3>
+            <ul>
+              <li>For professional usage</li>
+              <li>Latest versions of kernel and packages</li>
+              <li>Easy update and portability</li>
+              <li>Examples: PandaBoard, Raspbian MPK</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Comparability</h3>
+            <ul>
+              <li>Experience from one build system is useful on the others</li>
+              <li>Software is easily portable between build systems</li>
+              <li>Companies should try to experiment</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Edge computing</h3>
+            <ul>
+              <li>Perfect tools for edge computing</li>
+              <li>Portable between cloud and embedded</li>
+              <li>It is affordable to run Node.js on embedded device</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Open questions</h3>
+            <ul>
+              <li>Why only Linux?</li>
+              <li>What about MINIX, BSD, Darvin and HURD?</li>
+              <li>Embedded Unix build systems?</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <h2>Thank you for attention</h2>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+// More info about config & dependencies:
+// - https://github.com/hakimel/reveal.js#configuration
+// - https://github.com/hakimel/reveal.js#dependencies
+Reveal.initialize({
+  dependencies: [
+  { src: 'plugin/markdown/marked.js' },
+  { src: 'plugin/markdown/markdown.js' },
+  { src: 'plugin/notes/notes.js', async: true },
+  { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+  ]
+});
+    </script>
+  </body>
+</html>
