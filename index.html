@@ -70,6 +70,28 @@ document.getElementsByTagName( 'head' )[0].appendChild( link );
           </section>
         </section>
 
+
+        <section>
+          <section>
+            <h2>PLAN</h2>
+            <h4><a href="https://cdynak.github.io/linux2018">cdynak.github.io/linux2018</a></h4>
+            <ul>
+              <li>Embedded Linux build systems - comparison</li>
+              <ul>
+                <li>introduction</li>
+                <li>definitions</li>
+                <li>examples</li>
+              </ul>
+              <li>Embedded Linux build systems - applications</li>
+              <ul>
+                <li>IoT</li>
+                <li>cloud</li>
+                <li>edge</li>
+              </ul>
+            </ul>
+          </section>
+        </section>
+
         <section>
           <section>
             <h2>Linux</h2>
@@ -137,14 +159,14 @@ document.getElementsByTagName( 'head' )[0].appendChild( link );
               <li>https://raspberrypi.org</li>
               <li>https://beagleboard.org/black</li>
               <li>http://wiki.litesom.grinn-global.com</li>
-              <li>https://wandboard.org/products/wandboard/WB-IMX6Q-BW</li>
+              <li>https://wandboard.org</li>
               <li>http://pandaboard.org</li>
             </ul>
             <!-- https://en.wikipedia.org/wiki/Comparison_of_single-board_computers -->
             <!-- https://hackaday.com/2017/06/19/intel-discontinues-joule-galileo-and-edison-product-lines/ -->
           </section>
           <section>
-            <h3>Why did people play with development boards</h3>
+            <h3>But why?</h3>
             <ul>
               <li>for prototyping</li>
               <li>for promotion</li>
@@ -166,6 +188,42 @@ $ wget https://downloads.raspberrypi.org/raspbian_latest
 $ pv sdcard.img | dd of=/dev/sdb bs=4M oflag=dsync
             </code></pre>
           </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Testing and Comparing</h1>
+            <ul>
+              <li>Representative set of embedded devices</li>
+              <li>Available open source distribution builders</li>
+            </ul>
+          </section>
+
+
+
+          <section>
+            <img height="100" src="https://buildroot.org/images/logo.png" />
+            <img src="https://openwrt.org/lib/tpl/openwrt/images/logo.png" />
+            <img height="150" src="http://ltib.org/graphics/ltib_build.png" />
+            <img height="150" src="https://www.ptxdist.org/images/PTXdist_Logo_RGB.svg" />
+            <img src="http://www.yoctoproject.org/docs/current/yocto-project-qs/figures/yocto-project-transp.png" />
+          </section>
+
+          <section>
+            <h3>generalized os builders structure</h3>
+            <ul>
+              <li>Source code</li>
+              <li>Host OS requirements</li>
+              <li>Cross-compilation toolchain</li>
+              <li>Target OS configuration</li>
+              <li>Produced output</li>
+            </ul>
+          </section>
+
+
+          <section>
+            <img src="https://buildroot.org/images/logo.png" />
+          </section>
           <section>
             <pre><code class="hljs" data-trim contenteditable>
 $ sudo apt update
@@ -179,49 +237,116 @@ $ make
 $ ls output/images/sdcard.img
             </code></pre>
           </section>
-        </section>
 
-        <section>
-          <section>
-            <h1>Testing</h1>
-          </section>
-          <section>
-            <h3>Exploring and describing</h3>
-            <ul>
-              <li>Representative set of embedded devices</li>
-              <li>All open source distribution builders</li>
-            </ul>
-          </section>
-          <section>
-            <img src="https://regmedia.co.uk/2013/06/03/bbb_2.jpg" />
-            <!-- https://www.theregister.co.uk/2013/06/11/review_beagleboard_beaglebone_black/ -->
-            <p>Raspberry Pi and BeagleBone Black</p>
-          </section>
-          <section>
-            <h3>generalized os builders structure</h3>
-            <ul>
-              <li>Source code</li>
-              <li>Host OS requirements</li>
-              <li>Cross-compilation toolchain</li>
-              <li>Target OS configuration</li>
-              <li>Produced output</li>
-            </ul>
-          </section>
-          <section>
-            <img src="https://buildroot.org/images/logo.png" />
-          </section>
           <section>
             <img src="https://openwrt.org/lib/tpl/openwrt/images/logo.png" />
           </section>
           <section>
+            <pre><code class="hljs" data-trim contenteditable>
+sudo apt install make gcc g++ libncurses-dev unzip git gawk file zlib1g-dev     
+git clone -b v17.01.4 https://github.com/openwrt/openwrt                        
+cd openwrt/                                                                     
+./scripts/feeds update -a                                                       
+./scripts/feeds install -a                                                      
+make defconfig                                                                  
+make menuconfig                                                                 
+# Target System (Broadcom BCM27xx)                                              
+# Target Profile (Raspberry Pi B/B+/CM/Zero/ZeroW)                              
+time make -j                                                                    
+cp build_dir/target-arm_arm1176jzf-s+vfp_musl-1.1.16_eabi/linux-brcm2708_bcm2708/tmp/lede-brcm2708-bcm2708-rpi-ext4-sdcard.img ~
+            </code></pre>
+          </section>
+
+          <section>
             <img src="http://ltib.org/graphics/ltib_build.png" />
           </section>
+          <section>
+            <pre><code class="hljs" data-trim contenteditable>
+sudo apt install make gcc g++ libncurses-dev unzip rpm bison patch tcl zlib1g-dev
+                                                                                
+wget https://github.com/downloads/midnightyell/RPi-LTIB/raspberrypi-tools-9c3d7b6-1.i386.rpm
+sudo mkdir -p /opt/ltib/pkgs/                                                   
+sudo cp raspberrypi-tools-9c3d7b6-1.i386.rpm /opt/ltib/pkgs/                    
+                                                                                
+sudo dpkg --add-architecture i386                                               
+sudo apt update                                                                 
+sudo apt install zlib1g:i386 libstdc++:i386                                     
+                                                                                
+wget http://download.savannah.nongnu.org/releases/ltib/ltib-13-2-1-sv.tar.gz    
+tar -xzf ltib-13-2-1-sv.tar.gz                                                  
+cd ltib-13-2-1-sv/                                                              
+time ./ltib                                                                     
+                                                                                
+# Platform choice (Raspberry Pi with BCM2835 SoC)                               
+                                                                                
+cp output/images/sdcard.img ~                                                   
+            </code></pre>
+          </section>
+
           <section>
             <img src="https://www.ptxdist.org/images/PTXdist_Logo_RGB.svg" />
           </section>
           <section>
+            <pre><code class="hljs" data-trim contenteditable>
+sudo apt install make gcc g++ libncurses-dev unzip git gawk flex bison gettext python-dev lzop pkg-config libxml-parser-perl
+wget http://public.pengutronix.de/software/ptxdist/ptxdist-2018.01.0.tar.bz2    
+tar -xjf ptxdist-2018.01.0.tar.bz2                                              
+cd ptxdist-2018.01.0                                                            
+./configure                                                                     
+make                                                                            
+sudo make install                                                               
+cd ..                                                                           
+wget http://public.pengutronix.de/software/ptxdist/ptxdist-2016.06.0.tar.bz2    
+tar -xjf ptxdist-2016.06.0.tar.bz2                                              
+cd ptxdist-2016.06.0                                                            
+./configure                                                                     
+make                                                                            
+sudo make install                                                               
+cd ..                                                                           
+                                                                                
+wget https://public.pengutronix.de/oselas/toolchain/OSELAS.Toolchain-2016.06.1.tar.bz2
+tar -xjf OSELAS.Toolchain-2016.06.1.tar.bz2                                     
+cd OSELAS.Toolchain-2016.06.1/                                                  
+ptxdist-2016.06.0 select ptxconfigs/arm-1136jfs-linux-gnueabihf_gcc-5.4.0_glibc-2.23_binutils-2.26_kernel-4.6-sanitized.ptxconfig
+ptxdist-2016.06.0 migrate                                                       
+time ptxdist-2016.06.0 go                                                       
+                                                                                
+git clone https://git.pengutronix.de/cgit/DistroKit/                            
+cd DistroKit/                                                                   
+ptxdist-2018.01.0 platform configs/platform-rpi/platformconfig                  
+ptxdist-2018.01.0 migrate                                                       
+time ptxdist-2018.01.0 images                                                   
+cp platform-rpi/images/hd.img ~                                                 
+            </code></pre>
+          </section>
+
+          <section>
             <img src="http://www.yoctoproject.org/docs/current/yocto-project-qs/figures/yocto-project-transp.png" />
           </section>
+          <section>
+            <pre><code class="hljs" data-trim contenteditable>
+wget http://commondatastorage.googleapis.com/git-repo-downloads/repo            
+chmod a+x repo                                                                  
+sudo mv repo /usr/local/bin/                                                    
+                                                                                
+sudo apt install make gcc g++ unzip git                                         
+sudo apt install gawk diffstat texinfo build-essential chrpath                  
+                                                                                
+export MACHINE=raspberrypi                                                      
+                                                                                
+mkdir yoctoproject                                                              
+cd yoctoproject                                                                 
+repo init -u https://github.com/cdynak/yocto-manifest -m $MACHINE.xml           
+repo sync                                                                       
+                                                                                
+source poky/oe-init-build-env                                                   
+%MACHINE=wandboard DISTRO=poky source setup-environment build                   
+% vi conf/bblayers.conf (...?)                                                  
+time bitbake core-image-minimal                                                 
+cp tmp/deploy/images/$MACHINE/*img ~                                            
+            </code></pre>
+          </section>
+
           <section>
             <h3>Tests</h3>
             <ul>
@@ -239,6 +364,10 @@ $ ls output/images/sdcard.img
               <li>Building Containers</li>
             </ul>
           </section>
+        </section>
+
+        <section>
+          <h2>Node.js SCADA</h2>
         </section>
 
         <section>
@@ -324,6 +453,7 @@ $ docker run -t -i basic-system /bin/sh
               <li>Examples: PandaBoard, Raspbian MPK</li>
             </ul>
           </section>
+          
           <section>
             <h3>Comparability</h3>
             <ul>
@@ -332,6 +462,7 @@ $ docker run -t -i basic-system /bin/sh
               <li>Companies should try to experiment</li>
             </ul>
           </section>
+
           <section>
             <h3>Edge computing</h3>
             <ul>
@@ -340,6 +471,7 @@ $ docker run -t -i basic-system /bin/sh
               <li>It is affordable to run Node.js on embedded device</li>
             </ul>
           </section>
+
           <section>
             <h3>Open questions</h3>
             <ul>
