@@ -246,6 +246,9 @@ pv sdcard.img | dd of=/dev/sdb bs=4M oflag=dsync
 
           <section>
             <pre><code class="hljs" data-trim contenteditable>
+apt-get install python-dev python-pip
+pip install python-openstackclient
+
 openstack server create --flavor 'c2-30' --image 'Debian 9' --network 'Ext-Net' --key-name 'my_key-name' '15sl1'
 
 ssh debian@54.37.130.68
